@@ -1,0 +1,31 @@
+enclave {
+
+    include "stdio.h"
+    include "common.h"
+
+    trusted {
+        /* define ECALLs here. */
+
+
+        public sgx_status_t send_pbkey([out, size=encMessageOutLen] char *encMessageOut, size_t encMessageOutLen);
+
+        public sgx_status_t send_symkey([in, size=MessageInLen] char *MessageIn, size_t MessageInLen, [out, size=encMessageOutLen] char *encMessageOut, size_t encMessageOutLen);
+
+        public sgx_status_t receive_symkey([in, size=MessageInLen] char *MessageIn, size_t MessageInLen);
+        
+        public sgx_status_t send_infomessage([out, size=encMessageLen] char *encMessageOut, size_t encMessageLen);
+
+        public sgx_status_t rcvd_infomessage([in, size=MessageInLen] char *MessageIn, size_t MessageInLen);
+        
+        public sgx_status_t manage_rsa();
+    };
+
+    untrusted {
+        /* define OCALLs here. */
+        void ocall_print([in, string]unsigned char *data);
+
+        void print_time();
+
+        void ocall_print_uint8_array([in, size=len] uint8_t *array, size_t len);
+    };
+};
